@@ -39,3 +39,6 @@ struct Timer
      *              - memory manager in cpu can pick up patterns and is preemptive
      */
 };
+
+// &u[i][j] = &u[0][0] + j + (i * Y_dim)
+// cache line: usually 64 bytes (CPU)
