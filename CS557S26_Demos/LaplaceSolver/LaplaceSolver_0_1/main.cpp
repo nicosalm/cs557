@@ -5,7 +5,10 @@
 #include "PointwiseOps.h"
 #include "Reductions.h"
 
-
+/**
+ * so how fast is this? How do we evaluate something that has many iterations happening?
+ * it's pretty fast, ComputeLaplacian is the most expensive thing.
+ */
 int main(int argc, char *argv[])
 {
     using array_t = float (&) [XDIM][YDIM][ZDIM];
