@@ -70,3 +70,16 @@ void Saxpy(const float (&x)[XDIM][YDIM][ZDIM], const float (&y)[XDIM][YDIM][ZDIM
     for (int k = 1; k < ZDIM-1; k++)
         z[i][j][k] = x[i][j][k] * scale + y[i][j][k];
 }
+
+/*
+ * Suppose by contrast,
+ * K = # nonzero entries
+ * N = # rows/cols
+ *
+ * float x[4], y[4] # y <- A*x
+ * for i = 0...K-1  // why not add a pragma omp for here? -- A: no strong guarantee that cores won't touch
+ *      y[row[k]] = values[k] * x[col[k]]
+ *
+ * We use CSR (Compressed Sparse Row) which uses the fact that the rows array (if sorted) can be compressed.
+ * Invariant for CSR? (TODO)
+ */
