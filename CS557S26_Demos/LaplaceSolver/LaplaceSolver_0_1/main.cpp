@@ -15,19 +15,19 @@ int main(int argc, char *argv[])
     float *pRaw = new float [XDIM*YDIM*ZDIM];
     float *rRaw = new float [XDIM*YDIM*ZDIM];
     float *zRaw = new float [XDIM*YDIM*ZDIM];
-    
-    array_t x = reinterpret_cast<array_t>(*xRaw);
+
+    array_t x = reinterpret_cast<array_t>(*xRaw); // reshape so indexable with i,j,k variables (usable as 3D arrays)
     array_t f = reinterpret_cast<array_t>(*fRaw);
     array_t p = reinterpret_cast<array_t>(*pRaw);
     array_t r = reinterpret_cast<array_t>(*rRaw);
     array_t z = reinterpret_cast<array_t>(*zRaw);
 
     Timer timer;
-    
+
     // Initialization
     {
         timer.Start();
-        InitializeProblem(x, f);
+        InitializeProblem(x, f);            // initalize values of RHS as well as guess of the solution
         WriteAsImage("x", x, 0, 0, 127);
         Clear(p);
         Clear(r);
@@ -42,16 +42,16 @@ int main(int argc, char *argv[])
         Copy(r, p);
         float rho=InnerProduct(r,r);
         float rho_old, convergence_norm=0;
-        
+
         for(int iterations=0;;iterations++)
         {
             convergence_norm=Norm(r);
             std::cout << "Norm = " << convergence_norm << std::endl;
-            
+
             rho=InnerProduct(r,r);
             if(iterations>0)
                 Saxpy(p, r, p, rho/rho_old);
-            
+
             ComputeLaplacian(p, z);
             float p_dot_z=InnerProduct(p, z);
             float alpha=rho/p_dot_z;
